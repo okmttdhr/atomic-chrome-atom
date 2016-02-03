@@ -3,9 +3,12 @@ temp = require 'temp'
 module.exports = class WSHandler
   constructor: (@ws) ->
     @closed = false
+
+    # chrome extensionの方でも同じようなことやっていたような
     @ws.on 'message', (message) =>
       message = JSON.parse(message)
       this[message.type](message.payload) if this[message.type]
+
     @ws.on 'close', () =>
       @closed = true
       @changeSubscription.dispose() if @changeSubscription
@@ -33,6 +36,8 @@ module.exports = class WSHandler
       type: 'updateText'
       payload:
         text: @editor.getBuffer().lines.join('\n')
+
+    # 送信処理
     @ws.send JSON.stringify(message)
 
   updateText: (data) ->

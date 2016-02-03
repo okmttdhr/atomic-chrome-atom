@@ -6,6 +6,8 @@ WSHandler             = require './ws-handler'
 WS_PORT = 64292
 
 module.exports = AtomicChrome =
+
+  # websocketなど初期化?
   activate: (state) ->
     @wss = new Server({port: WS_PORT})
 
